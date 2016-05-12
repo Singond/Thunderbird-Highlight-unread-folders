@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<overlay id="sample" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<tree id="folderTree">
+		<script type="application/javascript" src="chrome://m4_addon/content/getFolderProperties.js" insertbefore="folderPaneCols" />
+	</tree>
+</overlay>

@@ -1,0 +1,3 @@
+#folderTree > treechildren::-moz-tree-cell-text(hasUnreadMessages-true) {
+	color: -moz-hyperlinktext;
+}
