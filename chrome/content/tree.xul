@@ -4,5 +4,6 @@
 	
 	<tree id="folderTree">
 		<script type="application/javascript" src="chrome://m4_addon/content/getFolderProperties.js" insertbefore="folderPaneCols" />
+		<script type="application/javascript" src="chrome://m4_addon/content/script.js" insertbefore="folderPaneCols" />
 	</tree>
 </overlay>
