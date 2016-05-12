@@ -10,6 +10,10 @@
 		<em:creator>slanyj</em:creator>
 		
 		<em:optionsURL>chrome://m4_addon/content/options.xul</em:optionsURL>
+		
+		<em:description>
+			Enables highlighting account names with unread folders.
+		</em:description>
 	
 		<em:targetApplication>
 			<Description>
