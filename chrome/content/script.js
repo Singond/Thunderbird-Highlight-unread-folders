@@ -8,12 +8,13 @@ window.addEventListener("load", function(e) {
 function customDisplay(string) {
 	document.getElementById("my-panel").label = string;
 }
-/*
+
 window.setInterval(
 	function() {
-		UnreadHighlighter.increment();
+		//UnreadHighlighter.increment();
+//		customDisplay(UnreadHighlighter.prefs.getCharPref("unread-account-style"));
 	}, 1000); //update every second
-*/
+
 var UnreadHighlighter = {
 	prefs: null,
 	
@@ -40,7 +41,7 @@ var UnreadHighlighter = {
 		if (topic != "nsPref:changed") {
 			return;
 		}
-//		customDisplay(subject + "|" + topic + "|" + data);
+		customDisplay(subject + "|" + topic + "|" + data);
 
 /*		switch(data) {
 			case "symbol":
