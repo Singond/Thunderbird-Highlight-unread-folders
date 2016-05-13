@@ -4,6 +4,11 @@
 	
 	<tree id="folderTree">
 		<script type="application/javascript" src="chrome://m4_addon/content/getFolderProperties.js" insertbefore="folderPaneCols" />
-		<script type="application/javascript" src="chrome://m4_addon/content/script.js" insertbefore="folderPaneCols" />
+ 		<script type="application/javascript" src="chrome://m4_addon/content/script.js" insertbefore="folderPaneCols" />
 	</tree>
+	
+	<statusbar id="status-bar">
+		<statusbarpanel id="my-panel" label="First panel"/>
+		<statusbarpanel id="my-second-panel" label="Second panel"/>
+	</statusbar>
 </overlay>

@@ -13,13 +13,13 @@ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 		<vbox>
 			<label control="unread-folder-style" value="Style of unread folders" />
 			<radiogroup>
-				<radio preference="pref_unread-folder-style" id="unread-folder-style" label="Default (no style override)" value="initial" />
-				<radio preference="pref_unread-folder-style" id="unread-folder-style" label="Highlight as a folder with new e-mail" value="link" />
+				<radio preference="pref_unread-folder-style" id="unread-folder-style1" label="Default (no style override)" value="initial" />
+				<radio preference="pref_unread-folder-style" id="unread-folder-style2" label="Highlight as a folder with new e-mail" value="link" />
 			</radiogroup>
 			<label control="unread-account-style" value="Style of accounts with unread messages"/>
 			<radiogroup>
-				<radio preference="pref_unread-account-style" id="unread-folder-style" label="Default (no style override)" value="initial" />
-				<radio preference="pref_unread-account-style" id="unread-folder-style" label="Highlight as a folder with new e-mail" value="link" />
+				<radio preference="pref_unread-account-style" id="unread-account-style1" label="Default (no style override)" value="initial" />
+				<radio preference="pref_unread-account-style" id="unread-account-style2" label="Highlight as a folder with new e-mail" value="link" />
 			</radiogroup>
 		</vbox>
 	</prefpane>
