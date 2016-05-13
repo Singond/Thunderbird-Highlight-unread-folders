@@ -38,6 +38,7 @@ function getFolderProperties(aFolder, aOpen) {
 	else
 	{
 		// We only set this if we're not a server
+		properties.push("isServer-false");
 		let shallowUnread = aFolder.getNumUnread(false);
 		if (shallowUnread > 0) {
 			properties.push("hasUnreadMessages-true");

@@ -1,53 +1,89 @@
-window.addEventListener("load", function(e) { 
-	document.getElementById("folderTree").classList.add("hello");
-//	document.getElementById("my-panel").label = "Hello";
+window.addEventListener("load", function(e) {
 	UnreadHighlighter.init();
-//	UnreadHighlighter.observe();
 }, false);
 
 function customDisplay(string) {
 	document.getElementById("my-panel").label = string;
 }
 
-window.setInterval(
+/*window.setInterval(
 	function() {
 		//UnreadHighlighter.increment();
 		var text = UnreadHighlighter.prefs.getCharPref("unread-folder-style");
 		text = text + UnreadHighlighter.prefs.getCharPref("unread-account-style");
 //		customDisplay(text);
-	}, 1000); //update every second
+	}, 1000); //update every second*/
 
 var UnreadHighlighter = {
-	prefs: null,
 	
+	/** Addon user preferences */
+	prefs: null,
+	/** The folder pane in TB window. */
+	pane: document.getElementById("folderTree"),
+	
+	/** "Constructor" */
 	init: function() {
+		// Getting the preferences object
 		this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.m4_addon.");
+		// Make it update the preferences on the fly by listening to their changes.
 		this.prefs.addObserver("", this, false);
+		/* Apply the preferences when starting, otherwise
+		 * they won't show up until they are changed for the first time. */
+		this.applyPreferenceAsClass("folder-highlight", this.pane);
+		this.applyPreferenceAsClass("account-highlight", this.pane);
 	},
 	
-/*	applyOptions: function() {
+	/** Class names associated with each option */
+	classNames: {
+		"folder-highlight": "highlight-folders",
+		"account-highlight": "highlight-accounts"
+	},
+	
+	/**
+	 * Applies the preference to the given target as a class name.
+	 * Works properly for boolean preferences only.
+	 * @param preference The preference name to check
+	 * @param target The target DOM element
+	 */
+	applyPreferenceAsClass: function(preference, target) {
+		var setTrue = this.prefs.getBoolPref(preference);
+		var className = this.classNames[preference];
 		
+		// Apply the setting to the element, if not present already.
+		if (setTrue && !target.classList.contains(className)) {
+			target.classList.add(className);
+		} else if (!setTrue && target.classList.contains(className)) {
+			target.classList.remove(className);
+		}
 	},
-	
-	counter: 1,
-	increment: function() {
-		customDisplay(++this.counter);
-	},*/
 	
 	observe: function(subject, topic, data) {
 		// Ignore everything which is not change of preferences
 		if (topic != "nsPref:changed") {
 			return;
 		}
-		customDisplay(subject + "|" + topic + "|" + data);
+		// TODO Remove this testing code
+		var folders = this.prefs.getBoolPref("folder-highlight");
+		var accounts = this.prefs.getBoolPref("account-highlight");
+		//var text = "";
+		/*if(folders) {text += "Highlight folders";}
+		if(accounts) {text += "Highlight accounts";}
+		customDisplay(data);*/
 
-/*		switch(data) {
-			case "symbol":
-				this.tickerSymbol = this.prefs.getCharPref("symbol").toUpperCase();
-				this.refreshInformation();
+		/*
+		 * If more options change, a separate event is generated for each,
+		 * ie. this function is called for every option separately.
+		 * The data argument is the name of the option changed, so:
+		 */ 
+		switch(data) {
+			case "folder-highlight":
+			case "account-highlight":
+				this.applyPreferenceAsClass(data, this.pane);
 				break;
-		}*/
+			default:
+				return;
+		}
 	}
 }

@@ -1,0 +1,4 @@
+#folderTree.highlight-folders > treechildren::-moz-tree-cell-text(hasUnreadMessages-true, isServer-false),
+#folderTree.highlight-accounts > treechildren::-moz-tree-cell-text(hasUnreadMessages-true, isServer-true) {
+	color: -moz-hyperlinktext;
+}
