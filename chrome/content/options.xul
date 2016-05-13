@@ -2,25 +2,17 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 
 <prefwindow id="m4_addon-prefs" title="Highlight Unread Folders: Options"
-xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<prefpane id="huf-pref" label="Settings for highlighting folders with unread mail.">
 		<preferences>
-			<preference id="pref_unread-folder-style" name="extensions.m4_addon.unread-folder-style" type="string" />
-			<preference id="pref_unread-account-style" name="extensions.m4_addon.unread-account-style" type="string" />
+			<preference id="huf_folder" name="extensions.m4_addon.folder-highlight" type="bool" />
+			<preference id="huf_account" name="extensions.m4_addon.account-highlight" type="bool" />
 		</preferences>
 
 		<vbox>
-			<label control="unread-folder-style" value="Style of unread folders" />
-			<radiogroup>
-				<radio preference="pref_unread-folder-style" id="unread-folder-style1" label="Default (no style override)" value="initial" />
-				<radio preference="pref_unread-folder-style" id="unread-folder-style2" label="Highlight as a folder with new e-mail" value="link" />
-			</radiogroup>
-			<label control="unread-account-style" value="Style of accounts with unread messages"/>
-			<radiogroup>
-				<radio preference="pref_unread-account-style" id="unread-account-style1" label="Default (no style override)" value="initial" />
-				<radio preference="pref_unread-account-style" id="unread-account-style2" label="Highlight as a folder with new e-mail" value="link" />
-			</radiogroup>
+			<checkbox preference="huf_folder" label="Highlight folders with unread messages."/>
+			<checkbox preference="huf_account" label="Highlight accounts with unread messages."/>
 		</vbox>
 	</prefpane>
 

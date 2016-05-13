@@ -12,7 +12,9 @@ function customDisplay(string) {
 window.setInterval(
 	function() {
 		//UnreadHighlighter.increment();
-//		customDisplay(UnreadHighlighter.prefs.getCharPref("unread-account-style"));
+		var text = UnreadHighlighter.prefs.getCharPref("unread-folder-style");
+		text = text + UnreadHighlighter.prefs.getCharPref("unread-account-style");
+//		customDisplay(text);
 	}, 1000); //update every second
 
 var UnreadHighlighter = {
@@ -23,7 +25,6 @@ var UnreadHighlighter = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.m4_addon.");
 		this.prefs.addObserver("", this, false);
-//		customDisplay(this.prefs);
 	},
 	
 /*	applyOptions: function() {
@@ -36,7 +37,6 @@ var UnreadHighlighter = {
 	},*/
 	
 	observe: function(subject, topic, data) {
-		customDisplay("observing…");
 		// Ignore everything which is not change of preferences
 		if (topic != "nsPref:changed") {
 			return;
