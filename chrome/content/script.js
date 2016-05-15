@@ -1,3 +1,4 @@
+// Initialize UnreadHighlighter
 window.addEventListener("load", function(e) {
 	UnreadHighlighter.init();
 }, false);
@@ -6,16 +7,9 @@ function customDisplay(string) {
 	document.getElementById("my-panel").label = string;
 }
 
-/*window.setInterval(
-	function() {
-		// This works
-		let nameColumn = UnreadHighlighter.pane.columns.getColumnAt(0);
-		UnreadHighlighter.pane.treeBoxObject.invalidate(nameColumn);
-	}, 250); //update period*/
-
 var UnreadHighlighter = {
 	
-	/** Addon user preferences */
+	/** User preferences for this add-on */
 	prefs: null,
 	/** The folder pane in TB window. */
 	pane: document.getElementById("folderTree"),
@@ -28,20 +22,14 @@ var UnreadHighlighter = {
 			.getBranch("extensions.m4_addon.");
 		// Make it update the preferences on the fly by listening to their changes.
 		this.prefs.addObserver("", this, false);
+		
 		/* Apply the preferences once when starting TB, otherwise
 		 * they won't show up until they are changed. */
 		this.applyPreferenceAsClass("folder-highlight", this.pane);
 		this.applyPreferenceAsClass("account-highlight", this.pane);
 		
-		/* 
-		 * Now create a Mutation Observer to listen for changes to DOM
-		 * (like when the class of an element is updated).
-		 */
-/*		var observer = new MutationObserver (this.redraw);
-		var config = {subtree: true, attributes: true, characterData: true, chhildList: true};
-		// Register it with the folder pane
-		observer.observe(this.pane, config);*/
-		
+		/* Listen for changes to the folder. This will update the view
+		 * when user changes the "read" status of a message. */
 		this.setupListener();
 	},
 	
@@ -54,38 +42,27 @@ var UnreadHighlighter = {
 	setupListener: function() {
 		customDisplay("Initializing listener...");
 		var folderListener = {
-		/*	OnItemPropertyChanged: function(item, property, oldValue, newValue) {
-				customDisplay: ("heard");
-			}*/
-//			OnItemAdded: this.redraw,
-//			OnItemRemoved: this.redraw,
-//			OnItemPropertyChanged: this.redraw,
 			OnItemIntPropertyChanged: this.redraw,
-//			OnItemBoolPropertyChanged: this.redraw,
-//			OnItemUnicharPropertyChanged: this.redraw,
-//			OnItemPropertyFlagChanged: this.redraw,
-//			OnItemEvent: this.redraw,
-//			OnFolderLoaded: this.redraw,
-//			OnDeleteOrMoveMessagesCompleted: this.redraw
 		};
 		var flags = Components.interfaces.nsIFolderListener.intPropertyChanged;
 		MailServices.mailSession.AddFolderListener(folderListener, flags);
 	},
-	
 	i: 0,
-	/** The callback function to be run by observer. */
-	redraw: function() {
+	/** The callback function to be run by the listener. */
+	redraw: function(item, property, oldValue, newValue) {
+		if (!property.equals("TotalUnreadMessages")) {
+			return;
+		}
+//		customDisplay([item, property, oldValue, newValue].join());
+//		customDisplay(UnreadHighlighter.i++);
 		let fpane = UnreadHighlighter.pane;
 		let nameColumn = fpane.columns.getColumnAt(0);
 		fpane.treeBoxObject.invalidate(nameColumn);
-		// TODO Delete testing code:
-		UnreadHighlighter.i++;
-		customDisplay("redraw" + UnreadHighlighter.i);
 	},
 	
 	/*
 	 * OPTIONS HANDLING
-	 * I don't know how to conditionally load CSS,
+	 * I don't know how to load CSS from JavaScript,
 	 * so instead I implement the conditions as CSS classes
 	 * on the folderTree element.
 	 */
@@ -123,13 +100,6 @@ var UnreadHighlighter = {
 		if (topic != "nsPref:changed") {
 			return;
 		}
-		// TODO Remove this testing code
-		var folders = this.prefs.getBoolPref("folder-highlight");
-		var accounts = this.prefs.getBoolPref("account-highlight");
-		//var text = "";
-		/*if(folders) {text += "Highlight folders";}
-		if(accounts) {text += "Highlight accounts";}
-		customDisplay(data);*/
 
 		/*
 		 * If more options change, a separate event is generated for each,
