@@ -5,6 +5,7 @@
 	
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>m4_addon@slanyj.cz</em:id>
+		<em:type>2</em:type>
 		<em:name>Highlight Unread Folders</em:name>
 		<em:version>1.0</em:version>
 		<em:creator>Jan Singon Slany</em:creator>
@@ -19,7 +20,7 @@
 			<Description>
 				<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
 				<em:minVersion>22.0</em:minVersion>
-				<em:maxVersion>45.0.*</em:maxVersion>
+				<em:maxVersion>45.0</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 	</Description>
