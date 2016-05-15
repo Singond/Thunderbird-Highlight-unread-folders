@@ -3,10 +3,6 @@ window.addEventListener("load", function(e) {
 	UnreadHighlighter.init();
 }, false);
 
-function customDisplay(string) {
-	document.getElementById("my-panel").label = string;
-}
-
 var UnreadHighlighter = {
 	
 	/** User preferences for this add-on */
@@ -33,31 +29,38 @@ var UnreadHighlighter = {
 		this.setupListener();
 	},
 	
-	/* AUTOMATIC UPDATING (REDRAWING) */
+	/*
+	 * AUTOMATIC UPDATING (REDRAWING)
+	 * This section deals with updating the view of the Folder Pane
+	 * when the unread status of some messages is changed.
+	 */
 	
 	/**
 	 * Creates a new listener for folder changes
 	 * and registers it.
 	 */
 	setupListener: function() {
-		customDisplay("Initializing listener...");
 		var folderListener = {
 			OnItemIntPropertyChanged: this.redraw,
 		};
 		var flags = Components.interfaces.nsIFolderListener.intPropertyChanged;
 		MailServices.mailSession.AddFolderListener(folderListener, flags);
 	},
-	i: 0,
-	/** The callback function to be run by the listener. */
+	/**
+	 * The callback function to be run by the listener.
+	 * This is where redrawing the Folder Pane takes place.
+	 */
 	redraw: function(item, property, oldValue, newValue) {
+		// Ignore everything not concerning unread status of messages
 		if (!property.equals("TotalUnreadMessages")) {
 			return;
 		}
-//		customDisplay([item, property, oldValue, newValue].join());
-//		customDisplay(UnreadHighlighter.i++);
+		// The folder pane
 		let fpane = UnreadHighlighter.pane;
+		// The first column is the folder name
 		let nameColumn = fpane.columns.getColumnAt(0);
-		fpane.treeBoxObject.invalidate(nameColumn);
+		// Invalidating the column causes it to be redrawn.
+		fpane.treeBoxObject.invalidateColumn(nameColumn);
 	},
 	
 	/*
@@ -95,16 +98,21 @@ var UnreadHighlighter = {
 		}
 	},
 	
+	/**
+	 * Called when preferences change
+	 */
 	observe: function(subject, topic, data) {
-		// Ignore everything which is not change of preferences
+		// Ignore everything which is not a change of preferences
 		if (topic != "nsPref:changed") {
 			return;
 		}
 
 		/*
+		 * Here we filter out the preferences which are not of interest.
+		 * 
 		 * If more options change, a separate event is generated for each,
 		 * ie. this function is called for every option separately.
-		 * The data argument is the name of the option changed, so:
+		 * The data argument is the name of the option changed.
 		 */ 
 		switch(data) {
 			case "folder-highlight":

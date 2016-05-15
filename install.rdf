@@ -7,18 +7,18 @@
 		<em:id>m4_addon@slanyj.cz</em:id>
 		<em:name>Highlight Unread Folders</em:name>
 		<em:version>1.0</em:version>
-		<em:creator>slanyj</em:creator>
+		<em:creator>Jan Singon Slany</em:creator>
 		
 		<em:optionsURL>chrome://m4_addon/content/options.xul</em:optionsURL>
 		
 		<em:description>
-			Enables highlighting account names with unread folders.
+			This add-on enables highlighting the account names which contain unread messages.
 		</em:description>
 	
 		<em:targetApplication>
 			<Description>
 				<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
-				<em:minVersion>1.5</em:minVersion>
+				<em:minVersion>22.0</em:minVersion>
 				<em:maxVersion>45.0.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
