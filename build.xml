@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TB_addon" default="info" basedir=".">
+	<description>
+		A build file for the Highlight Unread Folders extension for Thunderbird.
+	</description>
+	
+	<!-- Source folders -->
+	<property name="src" value="src"/>
+	<property name="debug" value="dbg"/>
+	<property name="release" value="rls"/>
+	<property name="addon" value="unreadAccounts"/>
+	
+	<target name="info">
+		<echo>debug: Create a debugging build, deploy it into local Thunderbird and delete TB cache.</echo>
+		<echo>release: A clean release build. (Deletes the previous release build!)</echo>
+		<echo>clean: Remove previous debugging build.</echo>
+	</target>
+	
+	<!-- All debugging actions. --> 
+	<target name="all">
+		<antcall target="clean"/>
+		<antcall target="test"/>
+		<antcall target="debug"/>
+		<antcall target="launch"/>
+	</target>
+	
+	<!-- Needs to be run with dist parameter set to the name of the distribution folder -->
+	<target name="distribution">
+		<!-- Preprocess the source code and copy it to destination folder. -->
+		<echo>Creating distribution folder at ${dist}.</echo>
+		<echo>Creating folder structure:</echo>
+		<mkdir dir="${dist}/chrome/content"/>
+		<mkdir dir="${dist}/defaults/preferences"/>
+
+		<antcall target="macro">
+			<param name="dest" value="${dist}"/>
+		</antcall>
+	</target>
+	
+	<!-- Expands all source files based on macro.m4 into ${dest} directory. -->
+	<target name="macro">
+		<echo>Expanding source code:</echo>
+		<mkdir dir="${dest}"/>		<!-- Ignored if exists -->
+		<apply executable="m4">		<!-- Applies command for each file -->
+			<arg value="macro.m4"/>	<!-- Macro definitions file -->
+			<srcfile/>
+			<fileset dir="${src}"></fileset>
+			<redirector>
+				<outputmapper type="glob" from="*" to="${dest}/*"/>
+			</redirector>
+		</apply>
+	</target>
+	
+	<target name="debug">		<!-- Create the debugging build. -->
+		<antcall target="distribution">
+			<param name="dist" value="${debug}"/>
+		</antcall>
+		<echo>Applying to local Thunderbird installation:</echo>
+		<copy file="${addon}@slanyj.cz" todir="E:\Portable Apps\Thunderbird\Data\profile\extensions"/>
+		<antcall target="purge_cache"/>
+	</target>
+	
+	<target name="test">		<!-- Create the debugging build. -->
+		<antcall target="distribution">
+			<param name="dist" value="test"/>
+			<param name="src" value="test_src"/>
+		</antcall>
+		<antcall target="purge_cache"/>
+	</target>
+	
+	<!-- Clear local Thunderbird cache for debugging. Needs the _purge-cache.bat custom script. -->
+	<target name="purge_cache">
+		<exec executable="cmd" outputproperty="forget">
+			<arg value="/c
+				cd /d &quot;E:\Portable Apps\Thunderbird\Data\profile\&quot; &amp;
+				_purge-cache.bat
+			"/>
+		</exec>
+	</target>
+	
+	<target name="release">		<!-- Clear the release folder and build a new one. -->
+		<delete dir="temp"/>	<!-- Make sure the temp folder is cleared, otherwise the release will include its contents. -->
+		<antcall target="distribution">
+			<param name="dist" value="temp"/>
+		</antcall>
+		<zip destfile="${addon}@slanyj.cz.xpi" basedir="temp"/>
+		<delete dir="temp"/>
+	</target>
+	
+	<target name="clean">		<!-- Clear the debug folder. -->
+		<delete dir="${debug}"/>
+		<delete dir="test"/>
+	</target>
+	
+	<target name="launch">
+		<exec executable="E:\Portable Apps\Thunderbird\ThunderbirdPortable.exe" />
+	</target>
+	
+</project>

@@ -1,0 +1,8 @@
+dbg/
+example/
+test_src/
+
+ant.txt
+*.xpi
+
+.project

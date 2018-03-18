@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<p>
+		This add-on enables highlighting the account names which contain unread messages.
+	</p>
+	<p>
+		Normally, a folder and its parent account name will flash briefly
+		to indicate it contains new mail.
+		(Please note the difference between <em>new mail</em> and <em>unread mail</em>.)
+		After a while, this highlight disappears, leaving the folder marked in bold,
+		but dropping any indication on the account name completely.
+		This can be a nuisance for collapsed accounts,
+		as it makes it easy to overlook unread mail.
+	</p>
+	<p>
+		This add-on attempts to solve that by keeping the folders and accounts
+		highlighted even if they contain <em>unread</em> mail, but no <em>new</em> mail.
+		Highlighting folders and account names can be toggled separately
+		in the add-on options dialog.
+	</p>
+	<p>
+		The functionality is achieved by enabling the account name object
+		to receive the <code>hasUnreadMessages-true</code> property.
+		Also, the regular folders receive additional <code>isServer-false</code>property,
+		in order to distinguish them from account names easily in CSS.
+	</p>
+	<p>
+		Currently, there are two options for either account names or folder names:
+	</p>
+		<ol>
+			<li>Use the default Thunderbird style</li>
+			<li>Use the blue highlight which is seen on new mail.
+				(This uses <code>color: -moz-hyperlinktext;</code> CSS
+				and is subject to change if you mess with the variable.</li>
+		</ol>
+	<p>
+		Further customization is possible via userChrome.css. In the CSS use the selectors
+		<code>treechildren::-moz-tree-cell-text(hasUnreadMessages-true, isServer-false)</code>
+		for regular folders, and
+		<code>treechildren::-moz-tree-cell-text(hasUnreadMessages-true, isServer-true)</code>
+		for account names.
+	</p>
+</body>
+</html>
