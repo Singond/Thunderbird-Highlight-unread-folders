@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="TB_addon" default="info" basedir=".">
+<project name="TB_addon" default="test" basedir=".">
 	<description>
-		A build file for the Highlight Unread Folders extension for Thunderbird.
+A build file for the Highlight Unread Folders extension for Thunderbird.
 	</description>
 	
 	<!-- Source folders -->
@@ -9,12 +9,6 @@
 	<property name="debug" value="dbg"/>
 	<property name="release" value="rls"/>
 	<property name="addon" value="unreadAccounts"/>
-	
-	<target name="info">
-		<echo>debug: Create a debugging build, deploy it into local Thunderbird and delete TB cache.</echo>
-		<echo>release: A clean release build. (Deletes the previous release build!)</echo>
-		<echo>clean: Remove previous debugging build.</echo>
-	</target>
 	
 	<!-- All debugging actions. --> 
 	<target name="all">
@@ -51,7 +45,7 @@
 		</apply>
 	</target>
 	
-	<target name="debug">		<!-- Create the debugging build. -->
+	<target name="debug" description="Create a debugging build, deploy it into local Thunderbird and delete TB cache">
 		<antcall target="distribution">
 			<param name="dist" value="${debug}"/>
 		</antcall>
@@ -60,7 +54,7 @@
 		<antcall target="purge_cache"/>
 	</target>
 	
-	<target name="test">		<!-- Create the debugging build. -->
+	<target name="test" description="Create a debugging build">
 		<antcall target="distribution">
 			<param name="dist" value="test"/>
 			<param name="src" value="test_src"/>
@@ -78,7 +72,8 @@
 		</exec>
 	</target>
 	
-	<target name="release">		<!-- Clear the release folder and build a new one. -->
+	<target name="release" description="A clean release build (deletes the previous release build!)">
+		<!-- Clear the release folder and build a new one. -->
 		<delete dir="temp"/>	<!-- Make sure the temp folder is cleared, otherwise the release will include its contents. -->
 		<antcall target="distribution">
 			<param name="dist" value="temp"/>
@@ -87,12 +82,12 @@
 		<delete dir="temp"/>
 	</target>
 	
-	<target name="clean">		<!-- Clear the debug folder. -->
+	<target name="clean" description="Remove previous debugging build">
 		<delete dir="${debug}"/>
 		<delete dir="test"/>
 	</target>
 	
-	<target name="launch">
+	<target name="launch" description="Run local Thunderbird">
 		<exec executable="E:\Portable Apps\Thunderbird\ThunderbirdPortable.exe" />
 	</target>
 	
