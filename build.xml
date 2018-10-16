@@ -57,9 +57,9 @@ A build file for the Highlight Unread Folders extension for Thunderbird.
 	<target name="test" description="Create a debugging build">
 		<antcall target="distribution">
 			<param name="dist" value="test"/>
-			<param name="src" value="test_src"/>
+			<param name="src" value="src"/>
 		</antcall>
-		<antcall target="purge_cache"/>
+		<!--<antcall target="purge_cache"/>-->
 	</target>
 	
 	<!-- Clear local Thunderbird cache for debugging. Needs the _purge-cache.bat custom script. -->
